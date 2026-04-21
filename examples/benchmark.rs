@@ -40,7 +40,7 @@ impl BenchmarkResults {
 }
 
 async fn benchmark_connected_throughput() -> Result<BenchmarkResults, MqttError> {
-    println!("🚀 Benchmarking connected throughput...");
+    println!(" Benchmarking connected throughput...");
     
     let config = MqttConfigBuilder::high_throughput("mqtt://localhost:1883", "bench_throughput")
         .build();
@@ -76,7 +76,7 @@ async fn benchmark_connected_throughput() -> Result<BenchmarkResults, MqttError>
 }
 
 async fn benchmark_offline_queuing() -> Result<BenchmarkResults, MqttError> {
-    println!("📦 Benchmarking offline queuing...");
+    println!(" Benchmarking offline queuing...");
     
     // Use invalid broker to force offline mode
     let config = MqttConfigBuilder::new("mqtt://invalid-broker:1883", "bench_offline")
@@ -118,7 +118,7 @@ async fn benchmark_offline_queuing() -> Result<BenchmarkResults, MqttError> {
 }
 
 async fn benchmark_mixed_workload() -> Result<BenchmarkResults, MqttError> {
-    println!("🔄 Benchmarking mixed workload (connected + offline)...");
+    println!(" Benchmarking mixed workload (connected + offline)...");
     
     let config = MqttConfigBuilder::high_reliability("mqtt://localhost:1883", "bench_mixed")
         .build();
@@ -154,7 +154,7 @@ async fn benchmark_mixed_workload() -> Result<BenchmarkResults, MqttError> {
 }
 
 async fn benchmark_memory_usage() -> Result<(), MqttError> {
-    println!("🧠 Benchmarking memory usage...");
+    println!(" Benchmarking memory usage...");
     
     let config = MqttConfigBuilder::new("mqtt://invalid-broker:1883", "bench_memory")
         .max_queue_size(50000)
@@ -170,7 +170,7 @@ async fn benchmark_memory_usage() -> Result<(), MqttError> {
     const LARGE_MESSAGE_SIZE: usize = 10240; // 10KB
     let large_payload = vec![b'A'; LARGE_MESSAGE_SIZE];
     
-    println!("   📏 Testing large messages (10KB each)...");
+    println!("    Testing large messages (10KB each)...");
     for i in 0..1000 {
         client.publish_async("bench/memory/large", &large_payload, QoS::AtLeastOnce).await?;
         
@@ -180,7 +180,7 @@ async fn benchmark_memory_usage() -> Result<(), MqttError> {
         }
     }
     
-    println!("   📐 Testing small messages (100B each)...");
+    println!("    Testing small messages (100B each)...");
     let small_payload = vec![b'B'; 100];
     for i in 0..10000 {
         client.publish_async("bench/memory/small", &small_payload, QoS::AtLeastOnce).await?;
@@ -192,7 +192,7 @@ async fn benchmark_memory_usage() -> Result<(), MqttError> {
     }
     
     let final_stats = client.stats().await;
-    println!("   🏁 Final queue size: {} messages", final_stats.queue_size);
+    println!("    Final queue size: {} messages", final_stats.queue_size);
     println!("      Estimated memory: ~{:.1} MB", 
              (1000 * LARGE_MESSAGE_SIZE + 10000 * 100) as f64 / (1024.0 * 1024.0));
     
@@ -202,9 +202,9 @@ async fn benchmark_memory_usage() -> Result<(), MqttError> {
 
 #[tokio::main]
 async fn main() -> Result<(), MqttError> {
-    println!("⚡ mqtt-persist Performance Benchmarks\n");
-    println!("🔧 These benchmarks test various performance characteristics.");
-    println!("   For connected tests, ensure you have a local MQTT broker running.\n");
+    println!(" mqtt-persist Performance Benchmarks\n");
+    println!(" These benchmarks test various performance characteristics.");
+    println!(" For connected tests, ensure you have a local MQTT broker running.\n");
     
     // Run throughput benchmark
     match benchmark_connected_throughput().await {
@@ -229,10 +229,10 @@ async fn main() -> Result<(), MqttError> {
         println!("❌ Memory usage test failed: {}\n", e);
     }
     
-    println!("🎯 Benchmark Summary:");
+    println!(" Benchmark Summary:");
     println!("   These results help understand mqtt-persist performance characteristics.");
     println!("   For production use, tune configuration based on your specific requirements.");
-    println!("\n✅ All benchmarks completed!");
+    println!("\n All benchmarks completed!");
     
     Ok(())
 }

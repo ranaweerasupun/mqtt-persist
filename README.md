@@ -7,14 +7,14 @@ A resilient MQTT client for Rust with offline message queuing and automatic reco
 
 ## Features
 
-- **🔄 Automatic Reconnection**: Connects automatically with exponential backoff
-- **📦 Offline Message Queuing**: Messages are queued in memory when disconnected
-- **⚡ Async/Await**: Built on tokio for high performance
-- **🛡️ Resilient**: Designed for unreliable network conditions
-- **🎯 Simple API**: Easy to use with sensible defaults
-- **📊 Built-in Statistics**: Monitor connection state and message flow
+- **Automatic Reconnection**: Connects automatically with exponential backoff
+- **Offline Message Queuing**: Messages are queued in memory when disconnected
+- **Async/Await**: Built on tokio for high performance
+- **Resilient**: Designed for unreliable network conditions
+- **Simple API**: Easy to use with sensible defaults
+- **Built-in Statistics**: Monitor connection state and message flow
 
-## Quick Start
+## Start Here ...
 
 Add to your `Cargo.toml`:
 
@@ -46,7 +46,7 @@ async fn main() -> Result<(), MqttError> {
 }
 ```
 
-## How It Works
+## Working mechanism ...
 
 **When connected**: Messages are published immediately to the broker.
 
@@ -181,9 +181,9 @@ The client runs a background task that:
 - Drains the offline queue when connected
 - Manages reconnection with exponential backoff
 
-## Roadmap
+## Plans for Future vesions - If you contribute please keep to this roadmap
 
-This is v0.1.0 with basic functionality. Future versions will add:
+This is v0.1.0 with basic functionality. The new fuctionalities will be analoges to my python version [edge-mqtt](https://github.com/ranaweerasupun/resilient-edge-mqtt-client). Future versions will add:
 
 - **v0.2.x**: SQLite persistence (messages survive restarts)
 - **v0.3.x**: Priority queuing and inflight message tracking  
@@ -194,11 +194,11 @@ This is v0.1.0 with basic functionality. Future versions will add:
 
 | Feature | mqtt-persist | paho-mqtt | rumqttc |
 |---------|--------------|-----------|---------|
-| Offline queuing | ✅ In-memory | ❌ None | ❌ None |
-| Auto-reconnection | ✅ Exponential backoff | ⚠️ Basic | ⚠️ Basic |
-| Message persistence | ⚠️ Memory only (v0.1) | ⚠️ Optional | ❌ None |
-| Async/await | ✅ Native | ✅ Available | ✅ Native |
-| Production ready | ⚠️ Early stage | ✅ Mature | ✅ Mature |
+| Offline queuing | In-memory | None |  None |
+| Auto-reconnection | Exponential backoff |  Basic |  Basic |
+| Message persistence | Memory only (v0.1) |  Optional |  None |
+| Async/await |  Native | Available |  Native |
+| Production ready |  Early stage |  Mature |  Mature |
 
 ## License
 

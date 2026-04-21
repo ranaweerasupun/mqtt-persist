@@ -47,7 +47,7 @@ impl TemperatureReading {
 
 #[tokio::main]
 async fn main() -> Result<(), MqttError> {
-    println!("🌡️  Starting temperature sensor simulation...");
+    println!("  Starting temperature sensor simulation...");
     println!("   This example demonstrates mqtt-persist offline queuing");
     println!("   Try stopping/starting your MQTT broker to see queuing in action!\n");
 
@@ -55,7 +55,7 @@ async fn main() -> Result<(), MqttError> {
     let mut client = MqttClient::new("mqtt://localhost:1883", device_id).await?;
     
     // Start the client
-    println!("🔌 Starting MQTT client...");
+    println!(" Starting MQTT client...");
     client.start().await?;
     
     // Give it a moment to connect
@@ -65,7 +65,7 @@ async fn main() -> Result<(), MqttError> {
     let mut readings_interval = interval(Duration::from_secs(5));
     let mut stats_interval = interval(Duration::from_secs(50)); // Every 10 readings
     
-    println!("📊 Beginning temperature readings (every 5 seconds)...\n");
+    println!(" Beginning temperature readings (every 5 seconds)...\n");
 
     loop {
         tokio::select! {
@@ -98,7 +98,7 @@ async fn main() -> Result<(), MqttError> {
             // Show statistics periodically
             _ = stats_interval.tick() => {
                 let stats = client.stats().await;
-                println!("\n📈 === STATISTICS ===");
+                println!("\n === STATISTICS ===");
                 println!("   Connection: {}", if stats.connected { "🟢 Online" } else { "🔴 Offline" });
                 println!("   Messages sent: {}", stats.messages_sent);
                 println!("   Messages queued: {}", stats.messages_queued);
@@ -106,7 +106,7 @@ async fn main() -> Result<(), MqttError> {
                 println!("   Reconnection attempts: {}", stats.reconnection_attempts);
                 
                 if stats.queue_size > 0 {
-                    println!("   📦 {} messages waiting for delivery", stats.queue_size);
+                    println!("   {} messages waiting for delivery", stats.queue_size);
                 }
                 
                 println!("==================\n");
@@ -114,9 +114,9 @@ async fn main() -> Result<(), MqttError> {
                 // Give some guidance to the user
                 if sequence % 20 == 0 {
                     if stats.connected {
-                        println!("💡 TIP: Try stopping your MQTT broker to see offline queuing in action!");
+                        println!(" TIP: Try stopping your MQTT broker to see offline queuing in action!");
                     } else {
-                        println!("💡 TIP: Start your MQTT broker to see messages drain from the queue!");
+                        println!(" TIP: Start your MQTT broker to see messages drain from the queue!");
                     }
                     println!();
                 }
