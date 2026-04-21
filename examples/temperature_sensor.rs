@@ -6,11 +6,10 @@
 //! - Demonstrates offline behavior when broker is unavailable
 
 use mqtt_persist::{MqttClient, QoS, MqttError};
-use serde::Serialize;
 use std::time::{SystemTime, UNIX_EPOCH};
 use tokio::time::{sleep, Duration, interval};
 
-#[derive(Serialize)]
+#[derive(Debug)]
 struct TemperatureReading {
     device_id: String,
     temperature: f32,
@@ -42,6 +41,13 @@ impl TemperatureReading {
             timestamp,
             sequence,
         }
+    }
+    
+    fn to_payload(&self) -> String {
+        format!(
+            "device_id={},temperature={:.2},humidity={:.2},timestamp={},sequence={}",
+            self.device_id, self.temperature, self.humidity, self.timestamp, self.sequence
+        )
     }
 }
 
@@ -75,18 +81,19 @@ async fn main() -> Result<(), MqttError> {
                 let reading = TemperatureReading::new(device_id.to_string(), sequence);
                 
                 let topic = format!("sensors/{}/temperature", device_id);
-                let payload = serde_json::to_vec(&reading).unwrap();
+                let payload = reading.to_payload();
                 
-                let status = if client.is_connected().await { "🟢" } else { "🔴" };
+                // Get stats to check connection status
+                let stats = client.stats().await;
+                let status = if stats.connected { "🟢" } else { "🔴" };
                 
-                match client.publish_async(&topic, payload, QoS::AtLeastOnce).await {
+                match client.publish_async(&topic, payload.as_bytes(), QoS::AtLeastOnce).await {
                     Ok(_) => {
-                        println!("{} #{:03} | 🌡️  {:.1}°C | 💧 {:.1}% | {} {}",
+                        let time_str = format_timestamp(reading.timestamp);
+                        println!("{} #{:03} |   {:.1}°C |  {:.1}% | {} {}",
                             status, sequence, reading.temperature, reading.humidity, 
-                            if client.is_connected().await { "SENT" } else { "QUEUED" },
-                            chrono::NaiveDateTime::from_timestamp(reading.timestamp as i64, 0)
-                                .unwrap_or_default()
-                                .format("%H:%M:%S")
+                            if stats.connected { "SENT" } else { "QUEUED" },
+                            time_str
                         );
                     }
                     Err(e) => {
@@ -106,7 +113,7 @@ async fn main() -> Result<(), MqttError> {
                 println!("   Reconnection attempts: {}", stats.reconnection_attempts);
                 
                 if stats.queue_size > 0 {
-                    println!("   {} messages waiting for delivery", stats.queue_size);
+                    println!("    {} messages waiting for delivery", stats.queue_size);
                 }
                 
                 println!("==================\n");
@@ -122,6 +129,27 @@ async fn main() -> Result<(), MqttError> {
                 }
             }
         }
+    }
+}
+
+fn format_timestamp(timestamp: u64) -> String {
+    use std::time::{SystemTime, UNIX_EPOCH};
+    
+    match SystemTime::UNIX_EPOCH.checked_add(Duration::from_secs(timestamp)) {
+        Some(_time) => {
+            // Simple time formatting
+            let now = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_secs();
+            let age = now.saturating_sub(timestamp);
+            
+            if age < 60 {
+                format!("{}s ago", age)
+            } else if age < 3600 {
+                format!("{}m ago", age / 60)
+            } else {
+                format!("{}h ago", age / 3600)
+            }
+        }
+        None => "now".to_string(),
     }
 }
 

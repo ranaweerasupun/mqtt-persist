@@ -1,4 +1,4 @@
-# mqtt-persist
+# mqtt-persist: Production MQTT Client in Rust
 
 [![Crates.io](https://img.shields.io/crates/v/mqtt-persist.svg)](https://crates.io/crates/mqtt-persist)
 [![Documentation](https://docs.rs/mqtt-persist/badge.svg)](https://docs.rs/mqtt-persist)
