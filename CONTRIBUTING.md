@@ -2,11 +2,11 @@
 
 Thank you for your interest in contributing to mqtt-persist! This guide will help you get started.
 
-## 🚀 Quick Start
+##  Quick Start
 
 1. **Fork and clone the repository**
    ```bash
-   git clone https://github.com/your-username/mqtt-persist.git
+   git clone https://github.com/ranaweerasupun/mqtt-persist.git
    cd mqtt-persist
    ```
 
@@ -31,7 +31,7 @@ Thank you for your interest in contributing to mqtt-persist! This guide will hel
    docker stop mqtt-test && docker rm mqtt-test
    ```
 
-## 📋 Development Workflow
+##  Development Workflow
 
 ### Before Starting
 
@@ -67,7 +67,7 @@ Thank you for your interest in contributing to mqtt-persist! This guide will hel
    cargo test
    ```
 
-## 🎯 Areas for Contribution
+##  Areas for Contribution
 
 ### High Priority
 - **SQLite persistence** (v0.2.0) - Messages survive restart
@@ -90,14 +90,14 @@ Thank you for your interest in contributing to mqtt-persist! This guide will hel
 - **Documentation typos** - Always appreciated!
 - **Test case additions** - Expand test coverage
 
-## 📝 Code Guidelines
+##  Code Guidelines
 
 ### Rust Style
 
 Follow standard Rust conventions:
 
 ```rust
-// ✅ Good
+//  Good
 pub struct QueueConfig {
     pub max_size: usize,
     pub overflow_policy: OverflowPolicy,
@@ -112,7 +112,7 @@ impl QueueConfig {
     }
 }
 
-// ❌ Avoid
+//  Avoid
 pub struct queueConfig {  // Use PascalCase
     maxSize: usize,       // Use snake_case
 }
@@ -123,7 +123,7 @@ pub struct queueConfig {  // Use PascalCase
 Use `Result` types and descriptive errors:
 
 ```rust
-// ✅ Good
+//  Good
 fn parse_broker_url(url: &str) -> Result<BrokerConfig, MqttError> {
     let parsed = Url::parse(url)
         .map_err(|_| MqttError::InvalidUrl(format!("Invalid broker URL: {}", url)))?;
@@ -134,7 +134,7 @@ fn parse_broker_url(url: &str) -> Result<BrokerConfig, MqttError> {
     })
 }
 
-// ❌ Avoid
+//  Avoid
 fn parse_broker_url(url: &str) -> BrokerConfig {
     let parsed = Url::parse(url).unwrap(); // Don't panic!
     // ...
@@ -146,14 +146,14 @@ fn parse_broker_url(url: &str) -> BrokerConfig {
 Use async/await consistently:
 
 ```rust
-// ✅ Good
+// Good
 pub async fn publish(&self, topic: &str, payload: &[u8]) -> Result<()> {
     let request = PublishRequest::new(topic, payload);
     self.sender.send(request).await?;
     Ok(())
 }
 
-// ❌ Avoid blocking calls in async context
+//  Avoid blocking calls in async context
 pub async fn publish(&self, topic: &str, payload: &[u8]) -> Result<()> {
     std::thread::sleep(Duration::from_millis(100)); // Blocks executor!
     // ...
@@ -194,7 +194,7 @@ pub async fn publish(&self, topic: &str, payload: &[u8], qos: QoS) -> Result<()>
 }
 ```
 
-## 🧪 Testing Requirements
+##  Testing Requirements
 
 ### Unit Tests
 
@@ -260,7 +260,7 @@ sleep 10
 pkill -f temperature_sensor
 ```
 
-## 📊 Performance Considerations
+##  Performance Considerations
 
 ### Benchmarking
 
@@ -300,7 +300,7 @@ async fn test_memory_bounds() {
 Avoid blocking the executor:
 
 ```rust
-// ✅ Good - non-blocking
+// Good - non-blocking
 pub async fn process_queue(&self) -> Result<()> {
     while let Some(message) = self.queue.try_dequeue().await {
         self.handle_message(message).await?;
@@ -309,7 +309,7 @@ pub async fn process_queue(&self) -> Result<()> {
     Ok(())
 }
 
-// ❌ Bad - blocks executor
+//  Bad - blocks executor
 pub async fn process_queue(&self) -> Result<()> {
     loop {
         let message = self.queue.dequeue_blocking(); // Blocks!
@@ -318,7 +318,7 @@ pub async fn process_queue(&self) -> Result<()> {
 }
 ```
 
-## 🔄 Pull Request Process
+##  Pull Request Process
 
 ### Before Submitting
 
@@ -372,7 +372,7 @@ List any breaking changes and migration path.
 3. **Manual testing** for significant changes
 4. **Documentation review** for user-facing features
 
-## 🏗️ Architecture Overview
+##  Architecture Overview
 
 Understanding the codebase structure:
 
@@ -412,14 +412,14 @@ Background Task
     Queue Drainer → Broker
 ```
 
-## 🤝 Communication
+##  Communication
 
 - **Issues** - Bug reports and feature requests
 - **Discussions** - General questions and ideas
 - **Discord/Slack** - Real-time chat (link in README)
 - **Email** - Maintainer contact for sensitive issues
 
-## 📜 License
+##  License
 
 By contributing to mqtt-persist, you agree that your contributions will be licensed under either:
 - Apache License, Version 2.0
@@ -429,4 +429,4 @@ The same as the project itself.
 
 ---
 
-Thank you for contributing to mqtt-persist! 🙏
+Thank you for contributing to mqtt-persist! 

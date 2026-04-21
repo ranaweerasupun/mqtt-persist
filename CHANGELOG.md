@@ -5,9 +5,9 @@ All notable changes to mqtt-persist will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2025-01-XX
+## [0.1.0] - 2026-04-XX
 
-### 🎉 Initial Release
+### Initial Release
 
 #### Added
 - **Core MQTT Client** with async/await API built on rumqttc
@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Testing guide for various scenarios
 - Performance characteristics and tuning advice
 
-### 📦 Dependencies
+### Dependencies
 - `rumqttc ^0.25` - MQTT protocol implementation
 - `tokio ^1.0` - Async runtime with full features
 - `serde ^1.0` - Serialization for configuration

@@ -40,10 +40,10 @@ cargo run --example simple
 ```
 
 This example:
-- ✅ Tests basic connection
-- ✅ Publishes messages when online
-- ✅ Shows statistics
-- ✅ Demonstrates async publishing
+- Tests basic connection
+- Publishes messages when online
+- Shows statistics
+- Demonstrates async publishing
 
 ### 2. Offline Behavior Test
 
@@ -299,7 +299,7 @@ cargo test --test integration || exit 1
 echo "5. Cleaning up..."
 kill $BROKER_PID
 
-echo "✅ All smoke tests passed!"
+echo " All smoke tests passed!"
 ```
 
 ### Performance Regression Test
@@ -314,10 +314,10 @@ BROKER_PID=$!
 sleep 2
 
 cargo run --example benchmark > benchmark_results.txt
-echo "📊 Benchmark results saved to benchmark_results.txt"
+echo " Benchmark results saved to benchmark_results.txt"
 
 kill $BROKER_PID
-echo "🏁 Performance test completed"
+echo " Performance test completed"
 ```
 
 ## Contributing Tests
